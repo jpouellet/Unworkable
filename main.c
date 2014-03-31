@@ -164,7 +164,9 @@ main(int argc, char **argv)
 		exit(0);
 	}
 
+#ifndef __OpenBSD__
 	srandom(time(NULL));
+#endif
 	network_start_torrent(torrent, rlp.rlim_cur);
 
 	exit(0);

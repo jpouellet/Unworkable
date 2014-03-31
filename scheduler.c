@@ -397,7 +397,11 @@ scheduler_choke_algorithm(struct session *sc, time_t *now)
 				num_interested++;
 		}
 		if (num_interested > 0) {
+#ifdef __OpenBSD__
+			j = arc4random_uniform(num_interested);
+#else
 			j = random() % num_interested;
+#endif
 			p2 = TAILQ_FIRST(&sc->peers);
 			for (k = 0; k < j; k++) {
 				if (p2 == NULL)
@@ -559,7 +563,11 @@ scheduler_piece_gimme(struct peer *peer, int flags, int *hint)
 			}
 		}
 		/* select piece randomly */
+#ifdef __OpenBSD__
+		idx = pieces[arc4random_uniform(peerpieces)];
+#else
 		idx = pieces[random() % peerpieces];
+#endif
 		xfree(pieces);
 		tpp = torrent_piece_find(peer->sc->tp, idx);
 	} else {

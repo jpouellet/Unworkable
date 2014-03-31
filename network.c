@@ -83,7 +83,11 @@ network_peer_id_create()
 	long r;
 	char *id;
 
+#ifdef __OpenBSD__
+	r = arc4random();
+#else
 	r = random();
+#endif
 	id = xmalloc(PEER_ID_LEN+1);
 	memset(id, 1, PEER_ID_LEN+1);
 	/* we don't care about truncation  here */
